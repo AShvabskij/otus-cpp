@@ -6,10 +6,13 @@ set(PROJECT_VESRION 0.0.${PATCH_VERSION})
 project(ip_filter VERSION ${PROJECT_VESRION})
 
 option(WITH_BOOST_TEST "Whether to build Boost test" OFF)
+option(WITH_GOOGLE_TEST "Whether to build Google test" ON)
 
 configure_file(version.h.in version.h)
 
-add_executable(ip_filter main.cpp)
+add_executable(ip_filter main.cpp
+    func.h
+    func.cpp)
 add_library(version_lib lib.cpp)
 
 set_target_properties(ip_filter version_lib PROPERTIES
@@ -69,6 +72,7 @@ else ()
             -Wall -Wextra -pedantic -Werror
         )
     endif()
+
 endif()
 
 install(TARGETS ip_filter RUNTIME DESTINATION bin)
@@ -83,4 +87,23 @@ include(CPack)
 if(WITH_BOOST_TEST)
     enable_testing()
     add_test(test_version test_version)
+endif()
+
+# ========== Google Test ==========
+if(WITH_GOOGLE_TEST)
+
+    enable_testing()
+
+    find_package(GTest CONFIG REQUIRED)
+
+    add_executable(ip_filter_test test_ip_filter.cpp func.cpp)
+
+    target_link_libraries(ip_filter_test PRIVATE
+        GTest::gtest_main
+    )
+
+    target_compile_options(ip_filter_test PRIVATE)
+
+    include(GoogleTest)
+    gtest_discover_tests(ip_filter_test)
 endif()
