@@ -8,24 +8,13 @@ project(allocator VERSION ${PROJECT_VESRION})
 option(WITH_BOOST_TEST "Whether to build Boost test" OFF)
 option(WITH_GOOGLE_TEST "Whether to build Google test" OFF)
 
-configure_file(version.h.in version.h)
-
 add_executable(allocator main.cpp
     allocator.h
     mycontainer.h )
-add_library(version_lib lib.cpp)
 
-set_target_properties(allocator version_lib PROPERTIES
+set_target_properties(allocator PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
-)
-
-target_include_directories(version_lib
-    PRIVATE "${CMAKE_BINARY_DIR}"
-)
-
-target_link_libraries(allocator PRIVATE
-    version_lib
 )
 
 if(WITH_BOOST_TEST)
@@ -52,9 +41,6 @@ if (MSVC)
     target_compile_options(allocator PRIVATE
         /W4
     )
-    target_compile_options(version_lib PRIVATE
-        /W4
-    )
     if(WITH_BOOST_TEST)
         target_compile_options(test_version PRIVATE
             /W4
@@ -62,9 +48,6 @@ if (MSVC)
     endif()
 else ()
     target_compile_options(allocator PRIVATE
-        -Wall -Wextra -pedantic -Werror
-    )
-    target_compile_options(version_lib PRIVATE
         -Wall -Wextra -pedantic -Werror
     )
     if(WITH_BOOST_TEST)
@@ -86,7 +69,6 @@ include(CPack)
 
 if(WITH_BOOST_TEST)
     enable_testing()
-    add_test(test_version test_version)
 endif()
 
 # ========== Google Test ==========
