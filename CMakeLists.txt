@@ -5,9 +5,6 @@ set(PROJECT_VESRION 0.0.${PATCH_VERSION})
 
 project(allocator VERSION ${PROJECT_VESRION})
 
-option(WITH_BOOST_TEST "Whether to build Boost test" OFF)
-option(WITH_GOOGLE_TEST "Whether to build Google test" OFF)
-
 add_executable(allocator main.cpp
     allocator.h
     mycontainer.h )
