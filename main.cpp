@@ -10,7 +10,6 @@
 // (".11", '.') -> ["", "11"]
 // ("11.22", '.') -> ["11", "22"]
 
-
 int main(int argc, char **argv) {
     try {
         std::ifstream input_file;

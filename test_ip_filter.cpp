@@ -48,7 +48,7 @@ std::string ipToString(const std::vector<uint8_t>& ip) {
     return result;
 }
 
-TEST(FilterTest, FilterByFirstByte) {
+TEST(FilterTest, FilterFirstByte) {
     std::vector<std::vector<uint8_t>> source_ip_pool;
     std::vector<uint8_t> ip1 = {1,2,3,4};
     std::vector<uint8_t> ip2 = {2,3,4,5};
@@ -56,10 +56,58 @@ TEST(FilterTest, FilterByFirstByte) {
 
     source_ip_pool = {ip1, ip2, ip3};
 
-    auto res = filter_byFirst_byte(source_ip_pool, static_cast<uint8_t>(1));
+    uint8_t first = static_cast<uint8_t>(1);
+    auto res  = filter(source_ip_pool, first);
 
     EXPECT_EQ(res.size(), 2);  // Должно быть 2 IP с первым байтом 1
 
     EXPECT_EQ(ipToString(res[0]), "1.2.3.4");
     EXPECT_EQ(ipToString(res[1]), "1.5.6.7");
+}
+
+TEST(FilterTest, FilterTwoBytes) {
+    std::vector<std::vector<uint8_t>> source_ip_pool;
+    std::vector<uint8_t> ip1 = {1,2,3,4};
+    std::vector<uint8_t> ip2 = {2,48,4,5};
+    std::vector<uint8_t> ip3 = {1,48,6,7};
+
+    source_ip_pool = {ip1, ip2, ip3};
+
+    uint8_t first = static_cast<uint8_t>(1);
+    uint8_t second = static_cast<uint8_t>(48);
+    auto res  = filter(source_ip_pool, first, second);
+
+    EXPECT_EQ(res.size(), 1);
+
+    EXPECT_EQ(ipToString(res[0]), "1.48.6.7");
+}
+
+TEST(FilterTest, FilterFourBytes) {
+    std::vector<std::vector<uint8_t>> source_ip_pool;
+    std::vector<uint8_t> ip1 = {1,2,3,4};
+    std::vector<uint8_t> ip2 = {2,48,4,5};
+    std::vector<uint8_t> ip3 = {1,48,6,7};
+
+    source_ip_pool = {ip1, ip2, ip3};
+
+    auto res  = filter(source_ip_pool, 1, 48, 6, 7);
+
+    EXPECT_EQ(res.size(), 1);
+
+    EXPECT_EQ(ipToString(res[0]), "1.48.6.7");
+}
+
+TEST(FilterTest, FilterWrongBytes) {
+    std::vector<std::vector<uint8_t>> source_ip_pool;
+    std::vector<uint8_t> ip1 = {1,2,3,4};
+    std::vector<uint8_t> ip2 = {2,48,4,5};
+    std::vector<uint8_t> ip3 = {1,48,6,7};
+
+    source_ip_pool = {ip1, ip2, ip3};
+
+    uint8_t first = static_cast<uint8_t>(1);
+    uint8_t second = static_cast<uint8_t>(48);
+    auto res  = filter(source_ip_pool, first, second, first, second, first); // 5 bytes, а должно не более 4
+
+    EXPECT_EQ(res.size(), 0);  // Должно быть 2 IP с первым байтом 1
 }
