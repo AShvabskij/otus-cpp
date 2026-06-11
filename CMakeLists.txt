@@ -5,7 +5,7 @@ set(PROJECT_VESRION 0.0.${PATCH_VERSION})
 
 project(ip_filter VERSION ${PROJECT_VESRION})
 
-option(WITH_GOOGLE_TEST "Whether to build Google test" ON)
+option(WITH_GOOGLE_TEST "Whether to build Google test" OFF)
 
 add_executable(ip_filter main.cpp
     func.h
