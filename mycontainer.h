@@ -15,7 +15,7 @@ private:
     using alloc_traits = std::allocator_traits<Allocator>;
 
 public:
-    // Итератор (однонаправленный, упрощённый)
+    // Итератор (однонаправленный)
     class Iterator {
     private:
         T* ptr_;

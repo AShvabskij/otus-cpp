@@ -24,10 +24,12 @@ public:
         if (n > ChunkSize) {
             throw std::bad_alloc(); // превышение фиксированного размера
         }
+
         if (n == 0) return nullptr;
 
         void* p = std::malloc(n * sizeof(T));
         if (!p) throw std::bad_alloc();
+
         return static_cast<pointer>(p);
     }
 
@@ -40,10 +42,6 @@ public:
     struct rebind {
         using other = FixedAllocator<U, ChunkSize>;
     };
-
-private:
-    // Фиксированный пул не реализуем полностью для простоты,
-    // но ограничение на количество элементов соблюдается.
 };
 
 template <typename T, typename U, std::size_t N>
