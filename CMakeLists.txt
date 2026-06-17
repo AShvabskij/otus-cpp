@@ -3,28 +3,26 @@ cmake_minimum_required(VERSION 3.12)
 set(PATCH_VERSION "1" CACHE INTERNAL "Patch version")
 set(PROJECT_VESRION 0.0.${PATCH_VERSION})
 
-project(allocator VERSION ${PROJECT_VESRION})
+project(print_ip VERSION ${PROJECT_VESRION})
 
-add_executable(allocator main.cpp
-    allocator.h
-    mycontainer.h )
+add_executable(print_ip main.cpp)
 
-set_target_properties(allocator PROPERTIES
+set_target_properties(print_ip PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
 )
 
 if (MSVC)
-    target_compile_options(allocator PRIVATE
+    target_compile_options(print_ip PRIVATE
         /W4
     )
 else ()
-    target_compile_options(allocator PRIVATE
+    target_compile_options(print_ip PRIVATE
         -Wall -Wextra -pedantic -Werror
     )
 endif()
 
-install(TARGETS allocator RUNTIME DESTINATION bin)
+install(TARGETS print_ip RUNTIME DESTINATION bin)
 
 set(CPACK_GENERATOR DEB)
 set(CPACK_PACKAGE_VERSION_MAJOR "${PROJECT_VERSION_MAJOR}")
