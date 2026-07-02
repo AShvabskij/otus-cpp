@@ -67,7 +67,7 @@ int main() {
     //     auto ptr = alloc5.allocate(10); // должно выбросить исключение
     //     alloc5.deallocate(ptr, 10);
     // } catch (const std::bad_alloc& e) {
-    //     std::cout << "\n[OK] FixedAllocator throws on exceeding chunk size\n";
+    //     std::cout << "\nFixedAllocator throws on exceeding chunk size\n";
     // }
 
     return 0;
