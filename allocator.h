@@ -18,12 +18,14 @@ public:
     using size_type = std::size_t;
 
     std::byte* m_buffer;
+    std::size_t m_offset;
     std::size_t m_capacity;
     bool m_owned;
 
     FixedAllocator()
         : m_buffer(nullptr)
-        , m_capacity(ChunkSize * sizeof(T))
+        , m_offset(0)
+        , m_capacity(ChunkSize * ChunkSize * sizeof(T))
         , m_owned(true)
     {
         m_buffer = static_cast<std::byte*>(std::malloc(m_capacity));
@@ -32,16 +34,19 @@ public:
         }
     }
 
+    // конструктор преобразования
     template <typename U>
     FixedAllocator(const FixedAllocator<U, ChunkSize>& other) noexcept
         : m_buffer(other.m_buffer)
+        , m_offset(other.m_offset)
         , m_capacity(other.m_capacity)
         , m_owned(false)  // Не владеем чужим буфером
     {}
 
-    // Конструктор копирования
+    // конструктор копирования
     FixedAllocator(const FixedAllocator& other) noexcept
         : m_buffer(other.m_buffer)
+        , m_offset(other.m_offset)
         , m_capacity(other.m_capacity)
         , m_owned(false)  // Не владеем чужим буфером
     {}
@@ -52,6 +57,10 @@ public:
         }
     }
 
+    size_type max_size() const noexcept {
+        return ChunkSize;
+    }
+
     pointer allocate(size_type n) {
         if (n == 0) return nullptr;
 
@@ -59,12 +68,16 @@ public:
             throw std::bad_alloc(); // превышение фиксированного размера
         }
 
-        if (n * sizeof(T) > m_capacity) {
+        std::size_t needed_bytes = n * sizeof(T);
+        std::size_t new_offset = m_offset + needed_bytes;
+        if ( new_offset > m_capacity) {
             throw std::bad_alloc();
         }
 
         assert(m_buffer != 0);
-        void* p = m_buffer;
+
+        void* p = m_buffer + m_offset;
+        m_offset =  new_offset;
 
         return static_cast<pointer>(p);
     }

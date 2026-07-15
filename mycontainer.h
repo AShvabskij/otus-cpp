@@ -41,9 +41,11 @@ public:
     using iterator = Iterator;
     using const_iterator = Iterator;
 
-    MyContainer() : data_(nullptr), size_(0), capacity_(0), allocator_() {}
+    MyContainer() : data_(nullptr), size_(0), capacity_(0) {
 
-    explicit MyContainer(const Allocator& alloc)
+    }
+
+    MyContainer(const Allocator& alloc)
         : data_(nullptr), size_(0), capacity_(0), allocator_(alloc) {}
 
     ~MyContainer() {
@@ -54,33 +56,36 @@ public:
     }
 
     void push_back(const T& value) {
+        std::size_t max_size = alloc_traits::max_size(allocator_);
+        if (size_ >= max_size) throw std::bad_alloc();
+
         if (size_ >= capacity_) {
-            reserve(size_ + 1);
-            // reserve(capacity_ == 0 ? 1 : capacity_ * 2);
+            std::size_t new_cap = capacity_ == 0 ? 1 : capacity_ * 2;
+            if (new_cap > max_size ) {
+                new_cap = max_size;
+            }
+            reserve(new_cap);
         }
+
         alloc_traits::construct(allocator_, data_ + size_, value);
         ++size_;
     }
 
     void push_back(T&& value) {
+        std::size_t max_size = alloc_traits::max_size(allocator_);
+        if (size_ >= max_size) throw std::bad_alloc();
+
         if (size_ >= capacity_) {
-            reserve(size_ + 1);
-            // reserve(capacity_ == 0 ? 1 : capacity_ * 2);
+            std::size_t new_cap = capacity_ == 0 ? 1 : capacity_ * 2;
+            if (new_cap > max_size ) {
+                new_cap = max_size;
+            }
+            reserve(new_cap);
         }
+
         alloc_traits::construct(allocator_, data_ + size_, std::move(value));
         ++size_;
     }
-
-    // С++ 20 universal method
-    // template<typename U> requires std::constructible_from<T, U&&>
-    // void push_back(U&& value) {
-    //     if (size_ >= capacity_) {
-    //         reserve(size_ + 1);
-    //     }
-    //     alloc_traits::construct(allocator_, data_ + size_, std::forward<U>(value));
-    //     ++size_;
-    // }
-
 
     void reserve(std::size_t new_cap) {
         if (new_cap <= capacity_) return;

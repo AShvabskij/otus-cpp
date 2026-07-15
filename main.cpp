@@ -49,8 +49,7 @@ int main() {
     std::cout << std::endl;
 
     // 4. Свой контейнер с FixedAllocator на 10 элементов
-    FixedAllocator<int, 10> fixed_alloc;
-    MyContainer<int, FixedAllocator<int, 10>> c2(fixed_alloc);
+    MyContainer<int, FixedAllocator<int, 10>> c2{};
     for (int i = 0; i < 10; ++i) {
         c2.push_back(i);
     }
