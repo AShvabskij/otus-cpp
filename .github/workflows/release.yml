@@ -16,9 +16,27 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: true
+
+      - name: Install Doxygen
+      run: sudo apt-get install -y doxygen graphviz
+
       - run: cmake . -DPATCH_VERSION=${{ github.run_number }} -DWITH_BOOST_TEST=OFF
       - run: cmake --build .
       - run: cmake --build . --target package
+
+      # Генерация документации
+      - name: Generate Doxygen Documentation
+        run: doxygen Doxyfile
+
+# Публикация на GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/html
+          destination_dir: .
+          keep_files: false
+          
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
