@@ -13,22 +13,29 @@ jobs:
     permissions:
       contents: write
     steps:
+      # Checkout repository with submodules
       - uses: actions/checkout@v2
         with:
           submodules: true
 
+      # Install Doxygen and Graphviz for documentation generation
       - name: Install Doxygen
-      run: sudo apt-get install -y doxygen graphviz
+        run: sudo apt-get install -y doxygen graphviz
 
+      # Configure CMake project
       - run: cmake . -DPATCH_VERSION=${{ github.run_number }} -DWITH_BOOST_TEST=OFF
+
+      # Build the project
       - run: cmake --build .
+
+      # Create Debian package
       - run: cmake --build . --target package
 
-      # Генерация документации
+      # Generate Doxygen documentation
       - name: Generate Doxygen Documentation
         run: doxygen Doxyfile
 
-# Публикация на GitHub Pages
+      # Deploy documentation to GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
@@ -36,7 +43,8 @@ jobs:
           publish_dir: ./docs/html
           destination_dir: .
           keep_files: false
-          
+
+      # Create GitHub Release
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -47,6 +55,8 @@ jobs:
           release_name: Release ${{ github.run_number }}
           draft: false
           prerelease: false
+
+      # Upload Debian package as release asset
       - name: Upload Release Asset
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
