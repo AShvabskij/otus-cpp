@@ -25,6 +25,16 @@
 var NAVTREE =
 [
   [ "print_ip", "index.html", [
+    [ "OTUS C++ Homework 4", "md_README.html", [
+      [ "📖 Описание", "md_README.html#autotoc_md1", null ],
+      [ "🛠️ Сборка", "md_README.html#autotoc_md2", [
+        [ "Требования", "md_README.html#autotoc_md3", null ],
+        [ "Сборка проекта", "md_README.html#autotoc_md4", null ]
+      ] ],
+      [ "1. Конфигурация", "md_README.html#autotoc_md5", null ],
+      [ "2. Сборка", "md_README.html#autotoc_md6", null ],
+      [ "3. Запуск", "md_README.html#autotoc_md7", null ]
+    ] ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
