@@ -2,10 +2,7 @@ name: 'C++ CI'
 
 on:
   push:
-    branches:
-      - master
-      - feature/github_actions
-      - homework4
+    branches: [master, feature/github_actions, homework4]
 
 jobs:
   build:
@@ -13,38 +10,16 @@ jobs:
     permissions:
       contents: write
     steps:
-      # Checkout repository with submodules
       - uses: actions/checkout@v2
         with:
           submodules: true
-
-      # Install Doxygen and Graphviz for documentation generation
-      - name: Install Doxygen
-        run: sudo apt-get install -y doxygen graphviz
-
-      # Configure CMake project
+      
+      # Сборка
       - run: cmake . -DPATCH_VERSION=${{ github.run_number }} -DWITH_BOOST_TEST=OFF
-
-      # Build the project
       - run: cmake --build .
-
-      # Create Debian package
       - run: cmake --build . --target package
-
-      # Generate Doxygen documentation
-      - name: Generate Doxygen Documentation
-        run: doxygen Doxyfile
-
-      # Deploy documentation to GitHub Pages
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs/html
-          destination_dir: .
-          keep_files: false
-
-      # Create GitHub Release
+      
+      # Создание релиза
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -55,8 +30,8 @@ jobs:
           release_name: Release ${{ github.run_number }}
           draft: false
           prerelease: false
-
-      # Upload Debian package as release asset
+      
+      # Загрузка артефакта
       - name: Upload Release Asset
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
