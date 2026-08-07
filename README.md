@@ -1,16 +1,11 @@
-# OTUS C++ Homework 4
+# OTUS C++ Homework 6
 
 [![C++ CI](https://github.com/AShvabskij/otus-cpp/actions/workflows/release.yml/badge.svg)](https://github.com/AShvabskij/otus-cpp/actions/workflows/release.yml)
-[![Documentation](https://img.shields.io/badge/docs-doxygen-blue.svg)](https://ashvabskij.github.io/otus-cpp/)
 
 ## 📖 Описание
 
-Демонстрационная программа для печати IP-адресов в различных форматах:
+Программа для демонстрации работы с двумерной матрицей:
 
-- Из целых чисел (`int8_t`, `int16_t`, `int32_t`, `int64_t`)
-- Из строки (`std::string`)
-- Из контейнеров (`std::vector`, `std::list`)
-- Из кортежа (`std::tuple`)
 
 ## 🛠️ Сборка
 
@@ -28,4 +23,4 @@ cmake . -DPATCH_VERSION=1 -DWITH_BOOST_TEST=OFF
 cmake --build .
 
 # 3. Запуск
-./print_ip
+./matrix
