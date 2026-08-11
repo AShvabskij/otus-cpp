@@ -124,11 +124,6 @@ public:
 };
 
 int main() {
-// Set console encoding to UTF-8 for better compatibility
-#ifdef _WIN32
-    system("chcp 65001 > nul");
-#endif
-
     // Create matrix with default value 0
     Matrix<int, 0> matrix;
 
@@ -155,11 +150,11 @@ int main() {
         std::cout << "[" << x << ", " << y << "] = " << v << std::endl;
     }
 
-/*
-    for (auto [x, y, v] : matrix) {
-        std::cout << "[" << x << ", " << y << "] = " << v << std::endl;
-    }
-*/
+    // another form of iterating through the matrix
+    // for (auto [x, y, v] : matrix) {
+    //     std::cout << "[" << x << ", " << y << "] = " << v << std::endl;
+    // }
+
     std::cout << "\nCanonical form demonstration:" << std::endl;
     Matrix<int, -1> m2;
     ((m2[100][100] = 314) = 0) = 217;
