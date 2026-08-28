@@ -22,10 +22,17 @@ jobs:
 
 
       # Сборка
-      - run: cmake . -DPATCH_VERSION=${{ github.run_number }} -DWITH_GOOGLE_TEST=OFF
+      - run: cmake . -DPATCH_VERSION=${{ github.run_number }} -DWITH_GOOGLE_TEST=ON
       - run: cmake --build .
-      - run: cmake --build . --target package
-      
+
+      # Запуск тестов
+      - name: Run tests
+        run: ctest --output-on-failure
+
+      # Сборка пакета
+      - name: Build package
+        run: cmake --build . --target package        
+            
       # Создание релиза
       - name: Create Release
         id: create_release
