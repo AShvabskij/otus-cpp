@@ -14,8 +14,15 @@ jobs:
         with:
           submodules: true
       
+# Установка зависимостей для Google Test
+      - name: Install dependencies for Google Test
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtest-dev cmake build-essential
+
+
       # Сборка
-      - run: cmake . -DPATCH_VERSION=${{ github.run_number }} -DWITH_BOOST_TEST=OFF
+      - run: cmake . -DPATCH_VERSION=${{ github.run_number }} -DWITH_GOOGLE_TEST=OFF
       - run: cmake --build .
       - run: cmake --build . --target package
       
