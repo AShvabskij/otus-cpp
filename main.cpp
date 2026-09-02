@@ -42,7 +42,7 @@ int main() {
     // std::cout << "m2[100][100] = " << m2[100][100] << std::endl;
 
     // --------------
-    MatrixMD<int, -1, 3> matrix3d;
+    MatrixMD<int, 3, -1> matrix3d;
 
     // Заполнение диагоналей
     for (int i = 0; i < 5; i++) {
@@ -65,7 +65,7 @@ int main() {
     }
 
     // 4D матрица
-    MatrixMD<int, -1, 4> matrix4d;
+    MatrixMD<int, 4> matrix4d;
     matrix4d[1][2][3][4] = 42;
     std::cout << "\nmatrix4d[1][2][3][4] = " << matrix4d[1][2][3][4] << std::endl;
 

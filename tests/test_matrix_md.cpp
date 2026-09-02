@@ -3,7 +3,7 @@
 
 // Базовые тесты для 3D матрицы
 TEST(MatrixMDTest, Basic3D) {
-    MatrixMD<int, 0, 3> m;
+    MatrixMD<int, 3, 0> m;
 
     // Установка и чтение
     m[1][2][3] = 42;
@@ -20,7 +20,7 @@ TEST(MatrixMDTest, Basic3D) {
 
 // Тест для 4D матрицы
 TEST(MatrixMDTest, Basic4D) {
-    MatrixMD<int, -1, 4> m;
+    MatrixMD<int, 4, -1> m;
     m[1][2][3][4] = 100;
     EXPECT_EQ(m[1][2][3][4], 100);
     EXPECT_EQ(m.size(), 1);
@@ -29,21 +29,21 @@ TEST(MatrixMDTest, Basic4D) {
 
 // Тест: Значение по умолчанию (3D)
 TEST(MatrixMDTest, DefaultValue3D) {
-    MatrixMD<int, -1, 3> matrix;
+    MatrixMD<int, 3, -1> matrix;
     EXPECT_EQ(matrix[10][20][30], -1);
     EXPECT_EQ(matrix.size(), 0);
 }
 
 // Тест: Значение по умолчанию (4D)
 TEST(MatrixMDTest, DefaultValue4D) {
-    MatrixMD<int, -1, 4> matrix;
+    MatrixMD<int, 4, -1> matrix;
     EXPECT_EQ(matrix[1][2][3][4], -1);
     EXPECT_EQ(matrix.size(), 0);
 }
 
 // Тест канонической формы
 TEST(MatrixMDTest, CanonicalForm) {
-    MatrixMD<int, -1, 3> m;
+    MatrixMD<int, 3, -1> m;
     (((m[1][2][3] = 314) = 0) = 217);
     EXPECT_EQ(m[1][2][3], 217);
     EXPECT_EQ(m.size(), 1);
@@ -51,7 +51,7 @@ TEST(MatrixMDTest, CanonicalForm) {
 
 // Тест итератора
 TEST(MatrixMDTest, Iterator) {
-    MatrixMD<int, 0, 3> m;
+    MatrixMD<int, 3> m;
     m[0][0][0] = 1;
     m[1][1][1] = 2;
     m[2][2][2] = 3;
@@ -69,7 +69,7 @@ TEST(MatrixMDTest, Iterator) {
 
 // Тест диагоналей
 TEST(MatrixMDTest, Diagonals) {
-    MatrixMD<int, -1, 3> m;
+    MatrixMD<int, 3, -1> m;
     for (int i = 0; i < 5; i++) {
         m[i][i][i] = i;
         m[i][i][4-i] = 4-i;
@@ -89,9 +89,9 @@ TEST(MatrixMDTest, Diagonals) {
 
 // Тест разных размерностей
 TEST(MatrixMDTest, DifferentDimensions) {
-    MatrixMD<int, 0, 2> m2;
-    MatrixMD<int, 0, 3> m3;
-    MatrixMD<int, 0, 4> m4;
+    MatrixMD<int, 2> m2;
+    MatrixMD<int, 3> m3;
+    MatrixMD<int, 4> m4;
 
     m2[1][2] = 10;
     m3[1][2][3] = 20;

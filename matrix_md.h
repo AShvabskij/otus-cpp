@@ -6,9 +6,11 @@
 #include <vector>
 #include <iostream>
 
-template <typename T, T DefaultValue, int Dims>
+template <typename T, int Dims, T DefaultValue = 0>
 class MatrixMD {
     static_assert(Dims > 0, "Dimensions must be positive");
+    static_assert(std::is_arithmetic_v<T> || std::is_default_constructible_v<T>,
+                  "T must be default constructible");
 
     using Key = std::vector<size_t>;
 
