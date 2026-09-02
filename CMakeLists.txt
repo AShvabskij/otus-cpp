@@ -8,7 +8,8 @@ option(WITH_GOOGLE_TEST "Whether to build Google test" ON)
 project(matrix VERSION ${PROJECT_VESRION})
 
 add_executable(matrix main.cpp
-    matrix.h)
+    matrix.h
+    matrix_md.h)
 
 set_target_properties(matrix PROPERTIES
     CXX_STANDARD 17
@@ -47,7 +48,7 @@ if(WITH_GOOGLE_TEST)
         message(STATUS "GTest libraries: ${GTest_LIBRARIES}")
     endif()
 
-    add_executable(matrix_tests tests/test_matrix.cpp)
+    add_executable(matrix_tests tests/test_matrix.cpp tests/test_matrix_md.cpp)
 
     target_link_libraries(matrix_tests PRIVATE
         GTest::gtest_main

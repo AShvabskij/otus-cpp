@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../matrix.h" // или вынесите класс Matrix в отдельный заголовочный файл
+#include "../matrix.h"
 
 // Тест 1: Создание матрицы и проверка размера
 TEST(MatrixTest, DefaultConstruction) {
