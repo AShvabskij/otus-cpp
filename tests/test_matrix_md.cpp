@@ -2,7 +2,7 @@
 #include "../matrix_md.h"
 
 // Базовые тесты для 3D матрицы
-TEST(MatrixNDTest, Basic3D) {
+TEST(MatrixMDTest, Basic3D) {
     MatrixMD<int, 0, 3> m;
 
     // Установка и чтение
@@ -19,7 +19,7 @@ TEST(MatrixNDTest, Basic3D) {
 }
 
 // Тест для 4D матрицы
-TEST(MatrixNDTest, Basic4D) {
+TEST(MatrixMDTest, Basic4D) {
     MatrixMD<int, -1, 4> m;
     m[1][2][3][4] = 100;
     EXPECT_EQ(m[1][2][3][4], 100);
@@ -28,21 +28,21 @@ TEST(MatrixNDTest, Basic4D) {
 }
 
 // Тест: Значение по умолчанию (3D)
-TEST(MatrixNDTest, DefaultValue3D) {
+TEST(MatrixMDTest, DefaultValue3D) {
     MatrixMD<int, -1, 3> matrix;
     EXPECT_EQ(matrix[10][20][30], -1);
     EXPECT_EQ(matrix.size(), 0);
 }
 
 // Тест: Значение по умолчанию (4D)
-TEST(MatrixNDTest, DefaultValue4D) {
+TEST(MatrixMDTest, DefaultValue4D) {
     MatrixMD<int, -1, 4> matrix;
     EXPECT_EQ(matrix[1][2][3][4], -1);
     EXPECT_EQ(matrix.size(), 0);
 }
 
 // Тест канонической формы
-TEST(MatrixNDTest, CanonicalForm) {
+TEST(MatrixMDTest, CanonicalForm) {
     MatrixMD<int, -1, 3> m;
     (((m[1][2][3] = 314) = 0) = 217);
     EXPECT_EQ(m[1][2][3], 217);
@@ -50,7 +50,7 @@ TEST(MatrixNDTest, CanonicalForm) {
 }
 
 // Тест итератора
-TEST(MatrixNDTest, Iterator) {
+TEST(MatrixMDTest, Iterator) {
     MatrixMD<int, 0, 3> m;
     m[0][0][0] = 1;
     m[1][1][1] = 2;
@@ -68,7 +68,7 @@ TEST(MatrixNDTest, Iterator) {
 }
 
 // Тест диагоналей
-TEST(MatrixNDTest, Diagonals) {
+TEST(MatrixMDTest, Diagonals) {
     MatrixMD<int, -1, 3> m;
     for (int i = 0; i < 5; i++) {
         m[i][i][i] = i;
@@ -88,7 +88,7 @@ TEST(MatrixNDTest, Diagonals) {
 }
 
 // Тест разных размерностей
-TEST(MatrixNDTest, DifferentDimensions) {
+TEST(MatrixMDTest, DifferentDimensions) {
     MatrixMD<int, 0, 2> m2;
     MatrixMD<int, 0, 3> m3;
     MatrixMD<int, 0, 4> m4;
