@@ -1,73 +1,66 @@
+#include <algorithm>
 #include <iostream>
-#include <cassert>
-#include "matrix.h"
-#include "matrix_md.h"
+#include <string>
+#include <memory>
+#include "parser.h"
+#include "handlers.h"
+#include "data.h"
 
-int main() {
+class StdinCommandSource : public ICommandSource {
+public:
+    bool getNextCommand(std::string& cmd) override {
+        cmd.clear();
 
-    // // Create matrix with default value 0
-    // Matrix<int, 0> matrix;
+        if (!std::getline(std::cin, cmd)) {
+            return false;
+        }
 
-    // for (int i = 0; i < 10; i++) {
-    //     matrix[i][i] = i;
-    //     matrix[i][9-i] = 9-i;
-    // }
+        if (cmd.empty()) {
+            return false;
+        }
 
-    // std::cout << "\nMatrix occupied cells: " << matrix.size() << std::endl;
-    // assert(matrix.size() == 18);
+        auto toLower = [](std::string str) {
+            std::transform(str.begin(), str.end(), str.begin(),
+                           [](unsigned char c) { return std::tolower(c); });
+            return str;
+        };
 
-    // std::cout << "Matrix fragment [1,1] to [8,8]:" << std::endl;
-    // matrix.printFragment(1, 8, 1, 8);
+        if (toLower(cmd) == "eof") {
+            return false;
+        }
 
-    // std::cout << "\nIterating through all occupied cells:" << std::endl;
-
-
-    // for(const auto &c: matrix)
-    // {
-    //     int x;
-    //     int y;
-    //     int v;
-    //     std::tie(x, y, v) = c;
-    //     std::cout << "[" << x << ", " << y << "] = " << v << std::endl;
-    // }
-
-    // // another form of iterating through the matrix
-    // // for (auto [x, y, v] : matrix) {
-    // //     std::cout << "[" << x << ", " << y << "] = " << v << std::endl;
-    // // }
-
-    // std::cout << "\nCanonical form demonstration:" << std::endl;
-    // Matrix<int, -1> m2;
-    // ((m2[100][100] = 314) = 0) = 217;
-    // std::cout << "m2[100][100] = " << m2[100][100] << std::endl;
-
-    // --------------
-    MatrixMD<int, 3, -1> matrix3d;
-
-    // Заполнение диагоналей
-    for (int i = 0; i < 5; i++) {
-        matrix3d[i][i][i] = i;
-        matrix3d[i][i][4-i] = 4-i;
+        return true;
     }
 
-    std::cout << "Occupied cells: " << matrix3d.size() << std::endl;
+    bool hasCommands() const override {
+        return !std::cin.eof();
+    }
+};
 
-    // Чтение значений
-    std::cout << "matrix3d[2][2][2] = " << matrix3d[2][2][2] << std::endl;
-    std::cout << "matrix3d[2][2][3] = " << matrix3d[2][2][3] << std::endl; // default value
-
-    // Обход всех занятых ячеек
-    std::cout << "\nAll occupied cells:" << std::endl;
-    for (const auto& item : matrix3d) {
-        // item - это кортеж (индексы, значение)
-        // Для простоты выведем только значение
-        std::cout << "Value: " << std::get<1>(item) << std::endl;
+int main(int argc, char* argv[]) {
+    if (argc != 2) {
+        std::cerr << "Usage: " << argv[0] << " <N>" << std::endl;
+        return 1;
     }
 
-    // 4D матрица
-    MatrixMD<int, 4> matrix4d;
-    matrix4d[1][2][3][4] = 42;
-    std::cout << "\nmatrix4d[1][2][3][4] = " << matrix4d[1][2][3][4] << std::endl;
+    int N = std::stoi(argv[1]);
+    if (N <= 0) {
+        std::cerr << "N must be positive" << std::endl;
+        return 1;
+    }
 
+    CommandParser parser(N);
+    parser.addHandler(std::make_shared<ConsoleHandler>());
+    parser.addHandler(std::make_shared<FileHandler>());
+    // parser.addHandler(std::make_shared<AsyncHandler>()); // Опционально
+
+    StdinCommandSource source;
+    std::string command;
+
+    while (source.getNextCommand(command)) {
+        parser.processCommand(command);
+    }
+
+    parser.flush();
     return 0;
 }

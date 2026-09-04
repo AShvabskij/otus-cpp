@@ -1,33 +1,40 @@
 cmake_minimum_required(VERSION 3.12)
 
 set(PATCH_VERSION "1" CACHE INTERNAL "Patch version")
-set(PROJECT_VESRION 0.0.${PATCH_VERSION})
+set(PROJECT_VERSION 0.0.${PATCH_VERSION})
 
 option(WITH_GOOGLE_TEST "Whether to build Google test" ON)
 
-project(matrix VERSION ${PROJECT_VESRION})
+project(parser VERSION ${PROJECT_VERSION})
 
-add_executable(matrix main.cpp
-    matrix.h
-    matrix_md.h)
+# ==================== Основной исполняемый файл ====================
+add_executable(bulk
+    main.cpp
+    parser.h
+    parser.cpp
+    handlers.h
+    handlers.cpp
+    data.h
+)
 
-set_target_properties(matrix PROPERTIES
+set_target_properties(bulk PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
 )
 
 if (MSVC)
-    target_compile_options(matrix PRIVATE
+    target_compile_options(bulk PRIVATE
         /W4
     )
 else ()
-    target_compile_options(matrix PRIVATE
+    target_compile_options(bulk PRIVATE
         -Wall -Wextra -pedantic -Werror
     )
 endif()
 
-install(TARGETS matrix RUNTIME DESTINATION bin)
+install(TARGETS bulk RUNTIME DESTINATION bin)
 
+# ==================== CPack для сборки пакетов ====================
 set(CPACK_GENERATOR DEB)
 set(CPACK_PACKAGE_VERSION_MAJOR "${PROJECT_VERSION_MAJOR}")
 set(CPACK_PACKAGE_VERSION_MINOR "${PROJECT_VERSION_MINOR}")
@@ -35,7 +42,7 @@ set(CPACK_PACKAGE_VERSION_PATCH "${PROJECT_VERSION_PATCH}")
 set(CPACK_PACKAGE_CONTACT example@example.com)
 include(CPack)
 
-# ========== Google Test ==========
+# ==================== Google Test ====================
 if(WITH_GOOGLE_TEST)
 
     enable_testing()
@@ -48,14 +55,17 @@ if(WITH_GOOGLE_TEST)
         message(STATUS "GTest libraries: ${GTest_LIBRARIES}")
     endif()
 
-    add_executable(matrix_tests tests/test_matrix.cpp tests/test_matrix_md.cpp)
+    add_executable(bulk_tests
+        tests/test_parser.cpp
+        tests/test_handlers.cpp
+    )
 
-    target_link_libraries(matrix_tests PRIVATE
+    target_link_libraries(bulk_tests PRIVATE
         GTest::gtest_main
     )
 
-    target_compile_options(matrix_tests PRIVATE)
+    target_compile_options(bulk_tests PRIVATE)
 
     include(GoogleTest)
-    gtest_discover_tests(matrix_tests)
+    gtest_discover_tests(bulk_tests)
 endif()
