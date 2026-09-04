@@ -58,10 +58,17 @@ if(WITH_GOOGLE_TEST)
     add_executable(bulk_tests
         tests/test_parser.cpp
         tests/test_handlers.cpp
+        parser.cpp
+        handlers.cpp
     )
 
     target_link_libraries(bulk_tests PRIVATE
+        GTest::gtest
         GTest::gtest_main
+    )
+
+    target_include_directories(bulk_tests PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}
     )
 
     target_compile_options(bulk_tests PRIVATE)

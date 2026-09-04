@@ -4,6 +4,8 @@
 
 // ==================== ConsoleHandler ====================
 void ConsoleHandler::handle(const CommandBlock& cmdBlock) {
+    if (cmdBlock.isEmpty()) return;
+
     std::cout << "bulk: ";
     auto commands = cmdBlock.getCommands();
     for (size_t i = 0; i < commands.size(); ++i) {

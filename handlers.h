@@ -15,9 +15,8 @@ public:
 };
 
 class FileHandler : public ICommandHandler {
-private:
-    std::string getFilename(std::time_t timestamp);
 public:
     void handle(const CommandBlock &cmdBlock) override;
+    std::string getFilename(std::time_t timestamp);
 };
 

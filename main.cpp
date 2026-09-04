@@ -52,7 +52,6 @@ int main(int argc, char* argv[]) {
     CommandParser parser(N);
     parser.addHandler(std::make_shared<ConsoleHandler>());
     parser.addHandler(std::make_shared<FileHandler>());
-    // parser.addHandler(std::make_shared<AsyncHandler>()); // Опционально
 
     StdinCommandSource source;
     std::string command;
