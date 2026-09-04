@@ -27,7 +27,6 @@ void CommandParser::processCommand(const std::string& cmd) {
         if (inDynamicBlock) {
             dynamicNestingLevel--;
             if (dynamicNestingLevel == 0) {
-                // Завершаем динамический блок
                 flushBlock(dynamicCmdBlock);
                 inDynamicBlock = false;
             }

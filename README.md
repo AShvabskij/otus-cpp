@@ -1,10 +1,10 @@
-# OTUS C++ Homework 6
+# OTUS C++ Homework 7
 
 [![C++ CI](https://github.com/AShvabskij/otus-cpp/actions/workflows/release.yml/badge.svg)](https://github.com/AShvabskij/otus-cpp/actions/workflows/release.yml)
 
 ## 📖 Описание
 
-Программа для демонстрации работы с двумерной матрицей:
+Программа для демонстрации работы парсером пакетных команд:
 
 
 ## 🛠️ Сборка
@@ -17,10 +17,10 @@
 
 ```bash
 # 1. Конфигурация
-cmake . -DPATCH_VERSION=1 -DWITH_BOOST_TEST=OFF
+cmake . -DPATCH_VERSION=1 -DWITH_GOOGLE_TEST=ON
 
 # 2. Сборка
 cmake --build .
 
 # 3. Запуск
-./matrix
+./bulk 3
